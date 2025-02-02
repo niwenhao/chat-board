@@ -6,10 +6,23 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Username:', username);
-    console.log('Password:', password);
+    const response = await fetch('/api/authorize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name: username, password: password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('Login successful:', data);
+    } else {
+      const error = await response.json();
+      console.error('Login failed:', error.message);
+    }
   };
 
   return (
