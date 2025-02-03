@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
-const secret = 'your_jwt_secret'; // Replace with your actual secret
+const secret = process.env.JWT_SECRET; // Use environment variable
 
 export async function POST(req) {
     const auth = await req.json();
