@@ -1,10 +1,14 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './globals.css';
+import { AuthContext } from './context/AuthContext';
 
 export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const { userInfo, setUserInfo } = useContext(AuthContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -18,10 +22,11 @@ export default function Home() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Login successful:', data);
+      setUserInfo(data);
+      setError('');
     } else {
       const error = await response.json();
-      console.error('Login failed:', error.message);
+      setError(error.message);
     }
   };
 
@@ -30,6 +35,7 @@ export default function Home() {
       <div className="w-full max-w-xs">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
             <input
