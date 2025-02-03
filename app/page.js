@@ -2,11 +2,14 @@
 import React, { useState, useContext } from 'react';
 import './globals.css';
 import { AuthContext } from './context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const router = useRouter();
 
   const { userInfo, setUserInfo } = useContext(AuthContext);
 
@@ -24,6 +27,7 @@ export default function Home() {
       const data = await response.json();
       setUserInfo(data);
       setError('');
+      router.push('/board');
     } else {
       const error = await response.json();
       setError(error.message);

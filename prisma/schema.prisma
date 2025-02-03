@@ -14,11 +14,31 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String @unique
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
   password String
   address  String
-  email    String @unique
+  email    String    @unique
   tel      String
+  channels UserChannels[] @relation("UserToChannels")
 }
+
+model Channel {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String
+  users       UserChannels[] @relation("ChannelToUsers")
+}
+
+// Join table for many-to-many relationship
+model UserChannels {
+  userId    Int
+  channelId Int
+  user      User    @relation(fields: [userId], references: [id], name: "UserToChannels")
+  channel   Channel @relation(fields: [channelId], references: [id], name: "ChannelToUsers")
+
+  @@id([userId, channelId])
+}
+
+
 
