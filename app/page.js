@@ -3,6 +3,7 @@ import React, { useState, useContext } from 'react';
 import './globals.css';
 import { AuthContext } from './context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Home() {
   const [username, setUsername] = useState('');
@@ -38,6 +39,9 @@ export default function Home() {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-xs">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        {/* add a link to navigate to the maintain route */}
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 w-full" onClick={e => router.push("/maintain")}>Maintain</button>
+
         <form onSubmit={handleLogin} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
           <div className="mb-4">

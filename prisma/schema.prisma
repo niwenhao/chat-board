@@ -21,6 +21,8 @@ model User {
   email    String    @unique
   tel      String
   channels UserChannels[] @relation("UserToChannels")
+  createdAt DateTime @default(now())   // added create timestamp
+  updatedAt DateTime @default(now())   // added update timestamp
 }
 
 model Channel {
@@ -28,6 +30,8 @@ model Channel {
   name        String    @unique
   description String
   users       UserChannels[] @relation("ChannelToUsers")
+  createdAt   DateTime @default(now())   // added create timestamp
+  updatedAt   DateTime @default(now())   // added update timestamp
 }
 
 // Join table for many-to-many relationship

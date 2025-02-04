@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 const secret = process.env.JWT_SECRET;
 
 export function GET(req) {
@@ -14,6 +18,18 @@ export function GET(req) {
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-    const resp = NextResponse.json({ message: "Hello, world!" });
-    return resp;
+    // Search for the user using id in the token jwt and get the channels.
+    const userData = prisma.user.findUnique({
+        where: {
+            userId: user.id
+        },
+        include: {
+           channels: {
+            include: {
+                channel: true
+            }
+           }
+        }
+    });
+    return NextResponse.json(userData.channels.map(c => c.channel), { status: 200 });
 }
