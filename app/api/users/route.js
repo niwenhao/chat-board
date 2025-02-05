@@ -10,8 +10,8 @@ export async function POST(req) {
       name: user.name,
       password: user.password,
       address: user.address,
-        email: user.email,  
-        tel: user.tel
+      email: user.email,
+      tel: user.tel
     }
   });
 
@@ -23,4 +23,4 @@ export async function GET(req) {
 
   return Response.json(users, { status: 200 });
 }
-  
+
