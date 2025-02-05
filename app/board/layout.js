@@ -13,7 +13,7 @@ export default function BoardLayout({ children }) {
         <TitleBar />
       </div>
       <div className="flex flex-1">
-        <div className="w-[6cm] bg-gray-200 p-4"> {/* Sidebar */}
+        <div className="w-[8cm] bg-gray-200 p-4"> {/* Sidebar */}
           <div className="box-l">
             <ChannelBar channel={channel} setChannel={setChannel} />
           </div>
