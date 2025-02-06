@@ -7,6 +7,8 @@ import ChannelEditPane from "./channel-edit-pane";
 export default function ChannelBar({ channel, setChannel }) {
     const [editOpen, setEditOpen] = useState(false);
 
+    const [searchKey, setSearchKey] = useState("");
+
     // A reducer for authorized channels and unauthorized channels
     const [channels, dispatch] = useReducer((current, action) => {
         switch (action.type) {
@@ -62,7 +64,12 @@ export default function ChannelBar({ channel, setChannel }) {
         <div className="bg-blue-500 text-white p-4"> {/* Title bar */}
             <div>
                 <span className="text-2xl">🔍</span>
-                <Input type="text" placeholder="Search" className="w-2/3" />
+                <Input type="text" placeholder="Search"
+                       value={searchKey} onChange={e => setSearchKey(e.target.value)}
+                       className={"w-[4cm] border-b border-solid border-transparent border-t-0 border-l-0 border-r-0 text-black"}
+                       />
+                <button onClick={() => setSearchKey("")}
+                    className="fixed left-[5cm] m-[2mm] z-10 text-black border-none">🗙</button>
                 <span onClick={handlePlusClick}>&nbsp;✙&nbsp;</span>
                 <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
                     <div className="w-full h-full flex">
@@ -78,7 +85,7 @@ export default function ChannelBar({ channel, setChannel }) {
             <div className="mt-4">
                 <div className="flex items-center space-x-2 cursor-pointer">Authorized Channels</div>
                 <ul>
-                    {channels.authorized.map(c => (
+                    {channels.authorized.filter(c => c.name.indexOf(searchKey.trim())>=0).map(c => (
                         <li 
                             key={c.id} 
                             className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
@@ -92,7 +99,7 @@ export default function ChannelBar({ channel, setChannel }) {
             <div className="mt-4">
                 <span className="flex items-center space-x-2 cursor-pointer">Other Channels</span>
                 <ul>
-                    {channels.unauthorized.map(c => (
+                    {channels.unauthorized.filter(c => c.name.indexOf(searchKey.trim())>=0).map(c => (
                         <li 
                             key={c.id} 
                             className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
