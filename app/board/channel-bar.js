@@ -1,13 +1,14 @@
 'use client';
 
-import { Input, Label } from "@headlessui/react";
-import Image from "next/image";
-import Link from "next/link";
+import { Button, Dialog, DialogTitle, Input } from "@headlessui/react";
 import { useEffect, useState } from "react";
+import ChannelEditPane from "./channel-edit-pane";
 
 export default function ChannelBar({ channel, setChannel }) {
     const [authorizedChannels, setAuthorizedChannels] = useState([]);
     const [otherChannels, setOtherChannels] = useState([]);
+
+    const [editOpen, setEditOpen] = useState(false);
 
     useEffect(() => {
         const get_channels = async () => {
@@ -27,19 +28,39 @@ export default function ChannelBar({ channel, setChannel }) {
         );
     }, []);
 
+    const handlePlusClick = e => {
+        console.log("plus clicked");
+        setEditOpen(true);
+    }
+
+
+
 
     return (
         <div className="bg-blue-500 text-white p-4"> {/* Title bar */}
             <div>
                 <span className="text-2xl">🔍</span>
                 <Input type="text" placeholder="Search" className="w-2/3" />
-                <span className="text-3xl">✙</span>
+                <a href="#" onClick={handlePlusClick}>&nbsp;✙&nbsp;</a>
             </div>
+            <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
+                <DialogTitle>Edit Channel</DialogTitle>
+                <ChannelEditPane 
+                    channel={{ name: "", description: "" }} 
+                    onSaveChannel={(c) => { setEditOpen(false); }} 
+                />
+            </Dialog>
             <div className="mt-4">
                 <div className="flex items-center space-x-2 cursor-pointer">Authorized Channels</div>
                 <ul>
                     {authorizedChannels.map(c => (
-                        <li key={c.id} className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} onClick={() => setChannel(c)}>{c.name}</li>
+                        <li 
+                            key={c.id} 
+                            className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
+                            onClick={() => setChannel(c)}
+                        >
+                            {c.name}
+                        </li>
                     ))}
                 </ul>
             </div>
@@ -47,7 +68,13 @@ export default function ChannelBar({ channel, setChannel }) {
                 <span className="flex items-center space-x-2 cursor-pointer">Other Channels</span>
                 <ul>
                     {otherChannels.map(c => (
-                        <li key={c.id} className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} onClick={() => setChannel(c)}>{c.name}</li>
+                        <li 
+                            key={c.id} 
+                            className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
+                            onClick={() => setChannel(c)}
+                        >
+                            {c.name}
+                        </li>
                     ))}
                 </ul>
             </div>

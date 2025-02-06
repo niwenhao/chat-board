@@ -16,53 +16,8 @@ export default function Page() {
 
     function handleInputChange(e) {
         const { name, value } = e.target;
-        setSelUser({ ...selUser, [name]: value });
+        setUser({ ...user, [name]: value });
     }
-
-    const saveUser = (e) => {
-        if (editMode === "Add") {
-            fetch('/api/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selUser),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    setUsers([...users, data]);
-                    setSelUser({
-                        id: "",
-                        name: "",
-                        password: "",
-                        address: "",
-                        email: "",
-                        tel: ""
-                    });
-                });
-        } else {
-            fetch(`/api/users/${selUser.id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(selUser),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    setUsers(users.map((user) => (user.id === data.id ? data : user)));
-                    setSelUser({
-                        id: "",
-                        name: "",
-                        password: "",
-                        address: "",
-                        email: "",
-                        tel: ""
-                    });
-                    setEditMode("Add");
-                });
-        }
-    };
 
 
     // Helper to format timestamp to yyyy/mm/dd hh:mm:ss in Japanese time zone
@@ -107,7 +62,7 @@ export default function Page() {
                     {/* New input row */}
                     <tr>
                         <td className="border border-solid border-blue-200 text-center w-[200px]">
-                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={saveUser}>{editMode}</button>
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">{editMode}</button>
                         </td>
                         <td className="border border-solid border-blue-200">
                             <input type="text" placeholder="ID" disabled className="p-2 w-full" />
