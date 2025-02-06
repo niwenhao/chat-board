@@ -41,9 +41,9 @@ export default function ChannelBar({ channel, setChannel }) {
             <div>
                 <span className="text-2xl">🔍</span>
                 <Input type="text" placeholder="Search" className="w-2/3" />
-                <a href="#" onClick={handlePlusClick}>&nbsp;✙&nbsp;</a>
+                <span onClick={handlePlusClick}>&nbsp;✙&nbsp;</span>
             </div>
-            <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
+            <Dialog open={editOpen} onClose={() => setEditOpen(false)} className="fixed inset-[3cm] z-10 w-[20cm] overflow-y-auto">
                 <DialogTitle>Edit Channel</DialogTitle>
                 <ChannelEditPane 
                     channel={{ name: "", description: "" }} 

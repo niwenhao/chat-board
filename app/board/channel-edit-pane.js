@@ -1,3 +1,4 @@
+'use clients'
 import React, { useState } from 'react';
 import { Description, Field, Label, Input, Textarea, Button } from "@headlessui/react";
 
@@ -10,7 +11,7 @@ export default function ChannelEditPane({ channel, onSaveChannel }) {
         <div className="bg-blue-200 p-4">
             <h2 className="text-2xl">Channel Edit</h2>
             {error && <p className="text-red-500 text-xs italic mb-4">{error}</p>}
-            <div>
+            <div className='bg-white p-4 rounded-lg shadow-md mb-4'>
                 <Field>
                     <Label>Name: </Label>
                     <Description>input channel name</Description>
