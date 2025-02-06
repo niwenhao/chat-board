@@ -61,16 +61,17 @@ export default function ChannelBar({ channel, setChannel }) {
     }
 
     return (
-        <div className="bg-blue-500 text-white p-4"> {/* Title bar */}
+        <div className="bg-blue-500 h-auto text-white p-4"> {/* Title bar */}
             <div>
-                <span className="text-2xl">🔍</span>
-                <Input type="text" placeholder="Search"
-                       value={searchKey} onChange={e => setSearchKey(e.target.value)}
-                       className={"w-[4cm] border-b border-solid border-transparent border-t-0 border-l-0 border-r-0 text-black"}
-                       />
-                <button onClick={() => setSearchKey("")}
-                    className="fixed left-[5cm] m-[2mm] z-10 text-black border-none">🗙</button>
-                <span onClick={handlePlusClick}>&nbsp;✙&nbsp;</span>
+                <Button onClick={handlePlusClick} className="border-solid hover:bg-blue-100 bg-red-200 pl-2 pr-2 border-black border-2 m-2">ADD</Button>
+                <div className={"w-full relative"}>
+                    <Input type="text" placeholder="Search"
+                        value={searchKey} onChange={e => setSearchKey(e.target.value)}
+                        className={"w-full border-b border-solid text-black"}
+                        />
+                    <button onClick={() => setSearchKey("")}
+                        className="absolute inset-y-0 z-10 right-0 rounded-r-lg text-black border-none">🗙</button>
+                </div>
                 <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
                     <div className="w-full h-full flex">
                         <DialogPanel className="w-[20cm] h-[10cm] bg-blue-200 z-10 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
