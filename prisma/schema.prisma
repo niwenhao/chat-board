@@ -20,7 +20,7 @@ model User {
   address  String
   email    String    @unique
   tel      String
-  channels UserChannels[] @relation("UserToChannels")
+  channels UserChannel[] @relation("UserToChannels")
   managedChannels Channel[] @relation("UserToManagedChannels")
   createdAt DateTime @default(now())   // added create timestamp
   updatedAt DateTime @default(now())   // added update timestamp
@@ -30,7 +30,7 @@ model Channel {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   description String
-  users       UserChannels[] @relation("ChannelToUsers")
+  users       UserChannel[] @relation("ChannelToUsers")
   managerId   Int?
   manager     User? @relation(fields: [managerId], references: [id], name: "UserToManagedChannels")
   createdAt   DateTime @default(now())   // added create timestamp
@@ -38,7 +38,7 @@ model Channel {
 }
 
 // Join table for many-to-many relationship
-model UserChannels {
+model UserChannel {
   userId    Int
   channelId Int
   user      User    @relation(fields: [userId], references: [id], name: "UserToChannels")
