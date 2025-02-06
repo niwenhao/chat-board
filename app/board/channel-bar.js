@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Dialog, DialogTitle, Input } from "@headlessui/react";
+import { Button, Dialog, DialogPanel, DialogTitle, Input } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import ChannelEditPane from "./channel-edit-pane";
 
@@ -42,14 +42,18 @@ export default function ChannelBar({ channel, setChannel }) {
                 <span className="text-2xl">🔍</span>
                 <Input type="text" placeholder="Search" className="w-2/3" />
                 <span onClick={handlePlusClick}>&nbsp;✙&nbsp;</span>
+                <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
+                    <DialogTitle>Edit Channel</DialogTitle>
+                    <div className="w-full h-full flex items-center justify-center">
+                        <DialogPanel className="w-[20cm] h-[10cm] bg-blue-200 z-10 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <ChannelEditPane 
+                                channel={{ name: "", description: "" }} 
+                                onSaveChannel={(c) => { setEditOpen(false); }} 
+                            />
+                        </DialogPanel>
+                    </div>
+                </Dialog>
             </div>
-            <Dialog open={editOpen} onClose={() => setEditOpen(false)} className="fixed inset-[3cm] z-10 w-[20cm] overflow-y-auto">
-                <DialogTitle>Edit Channel</DialogTitle>
-                <ChannelEditPane 
-                    channel={{ name: "", description: "" }} 
-                    onSaveChannel={(c) => { setEditOpen(false); }} 
-                />
-            </Dialog>
             <div className="mt-4">
                 <div className="flex items-center space-x-2 cursor-pointer">Authorized Channels</div>
                 <ul>
