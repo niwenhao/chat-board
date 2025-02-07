@@ -29,7 +29,8 @@ export default async function BoardLayout({ children }) {
       });
       if (response.ok) {
         const unauthorized = await response.json();
-        channels.unauthorized = unauthorized.filter(c => !channels.authorized.includes(c));
+        const channelIds = channels.authorized.map(c => c.id);
+        channels.unauthorized = unauthorized.filter(c => !channelIds.includes(c.id));
       }
     }
 
