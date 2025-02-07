@@ -1,13 +1,15 @@
 'use client';
 
 import { Button, Dialog, DialogPanel, DialogTitle, Input } from "@headlessui/react";
-import { useEffect, useState, useReducer } from "react";
+import { useState, useReducer } from "react";
 import ChannelEditPane from "./channel-edit-pane";
 
-export default function ChannelBar({ initChannels}) {
+export default function ChannelBar({ initChannels }) {
     const [editOpen, setEditOpen] = useState(false);
 
     const [searchKey, setSearchKey] = useState("");
+
+    const [channel, setChannel] = useState({ id: 0, name: "", description: "" });
 
     // A reducer for authorized channels and unauthorized channels
     const [channels, dispatch] = useReducer((current, action) => {
@@ -34,7 +36,8 @@ export default function ChannelBar({ initChannels}) {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({name, description})
+            body: JSON.stringify({name, description}),
+            cache: "no-store"
         });
         const newChannel = await resp.json();
         dispatch({ type: "addAuthorized", channel: newChannel });

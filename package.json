@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "JWT_SECRET=jwt-secret next dev --turbopack",
     "build": "next build",
-    "start": "next start",
+    "start": "JWT_SECRET=jwt-secret next start",
     "lint": "next lint",
     "db-migrate": "prisma migrate dev",
     "db-studio": "prisma studio"
