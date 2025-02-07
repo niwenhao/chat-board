@@ -3,7 +3,6 @@ import React, { useState, useContext } from 'react';
 import './globals.css';
 import { AuthContext } from './context/AuthContext';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 
 export default function Home() {
   const [username, setUsername] = useState('');

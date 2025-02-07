@@ -4,7 +4,7 @@ import { Button, Dialog, DialogPanel, DialogTitle, Input } from "@headlessui/rea
 import { useEffect, useState, useReducer } from "react";
 import ChannelEditPane from "./channel-edit-pane";
 
-export default function ChannelBar({ channel, setChannel }) {
+export default function ChannelBar({ initChannels}) {
     const [editOpen, setEditOpen] = useState(false);
 
     const [searchKey, setSearchKey] = useState("");
@@ -12,8 +12,6 @@ export default function ChannelBar({ channel, setChannel }) {
     // A reducer for authorized channels and unauthorized channels
     const [channels, dispatch] = useReducer((current, action) => {
         switch (action.type) {
-            case "initChannels":
-                return action.channels;
             case "addAuthorized":
                 return { authorized: [...current.authorized, action.channel], unauthorized: current.unauthorized };
             case "addUnauthorized":
@@ -21,25 +19,7 @@ export default function ChannelBar({ channel, setChannel }) {
             default:
                 return { authorized: current.authorized, unauthorized: current.unauthorized };
         }
-    }, {authorized: [], unauthorized: []});
-
-    useEffect(() => {
-        const fetchChannels = async () => {
-            const resp = await fetch("/api/channels/authorized");
-            const channels = await resp.json();
-            
-
-            const resp2 = await fetch("/api/channels");
-            const channels2 = await resp2.json();
-            const unauthenticated = channels2.filter(c => !channels.find(ac => ac.id === c.id));
-
-            return { authorized: channels, unauthorized: unauthenticated };
-        };
-
-        fetchChannels().then((channels) => {
-            dispatch({ type: "initChannels", channels });
-        });
-    }, []);
+    }, initChannels);
 
     const handlePlusClick = e => {
         console.log("plus clicked");
