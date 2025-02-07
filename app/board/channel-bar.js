@@ -1,15 +1,18 @@
 'use client';
 
 import { Button, Dialog, DialogPanel, DialogTitle, Input } from "@headlessui/react";
-import { useState, useReducer } from "react";
+import { useState, useReducer, useContext } from "react";
 import ChannelEditPane from "./channel-edit-pane";
+import { AuthContext } from "../context/AuthContext";
 
 export default function ChannelBar({ initChannels }) {
     const [editOpen, setEditOpen] = useState(false);
 
     const [searchKey, setSearchKey] = useState("");
 
-    const [channel, setChannel] = useState({ id: 0, name: "", description: "" });
+    const [channel, setChannel] = useState(initChannels.selectedChannel);
+
+    const {userInfo, setUserInfo} = useContext(AuthContext);
 
     // A reducer for authorized channels and unauthorized channels
     const [channels, dispatch] = useReducer((current, action) => {
@@ -43,6 +46,28 @@ export default function ChannelBar({ initChannels }) {
         dispatch({ type: "addAuthorized", channel: newChannel });
     }
 
+    const handleSelectChannel = async (channel) => {
+        setChannel(channel);
+        // Update the user's default channel
+        
+        try {
+            const resp = await fetch(`/api/users/${userInfo.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                defaultChannelId: channel.id,
+            }),
+            cache: "no-store"
+            });
+            const newUserInfo = await resp.json();
+            setUserInfo(newUserInfo);
+        } catch (error) {
+            console.error("Failed to update user info:", error);
+        }
+    }
+
     return (
         <div className="bg-blue-500 h-auto text-white p-4"> {/* Title bar */}
             <div>
@@ -73,7 +98,7 @@ export default function ChannelBar({ initChannels }) {
                         <li 
                             key={c.id} 
                             className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
-                            onClick={() => setChannel(c)}
+                            onClick={() => handleSelectChannel(c)}
                         >
                             {c.name}
                         </li>
@@ -87,7 +112,7 @@ export default function ChannelBar({ initChannels }) {
                         <li 
                             key={c.id} 
                             className={`block p-2 ${channel.id === c.id ? 'bg-blue-400' : ''}`} 
-                            onClick={() => setChannel(c)}
+                            onClick={() => handleSelectChannel(c)}
                         >
                             {c.name}
                         </li>

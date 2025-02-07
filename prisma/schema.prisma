@@ -20,6 +20,7 @@ model User {
   address  String
   email    String    @unique
   tel      String
+  defaultChannelId Int?
   channels UserChannel[] @relation("UserToChannels")
   managedChannels Channel[] @relation("UserToManagedChannels")
   createdAt DateTime @default(now())   // added create timestamp
