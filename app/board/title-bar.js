@@ -18,7 +18,7 @@ export default function TitleBar() {
             <div className="text-right">
                 <p className="text-l">Welcome, {userInfo.email}!
                 <button onClick={handleLogout} className="ml-4">
-                    <Image src={Logout} alt="Logout" width={50} height={50} />
+                    <Image src={Logout} alt="Logout" width={30} height={30} />
                 </button></p>
             </div>
         </div>
